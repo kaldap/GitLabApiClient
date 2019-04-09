@@ -190,5 +190,12 @@ namespace GitLabApiClient
         /// <param name="id">Id of the project.</param>
         public async Task UnArchiveAsync(int id) =>
             await _httpFacade.Post($"projects/{id}/unarchive");
+
+        /// <summary>
+        /// Get list of project commits.
+        /// </summary>
+        /// <param name="id">Id of the project.</param>
+        public async Task<IList<Commit>> GetCommitsAsync(int id) =>
+            await _httpFacade.GetPagedList<Commit>($"projects/{id}/repository/commits");
     }
 }
