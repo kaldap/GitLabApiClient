@@ -197,5 +197,40 @@ namespace GitLabApiClient
         /// <param name="id">Id of the project.</param>
         public async Task<IList<Commit>> GetCommitsAsync(int id) =>
             await _httpFacade.GetPagedList<Commit>($"projects/{id}/repository/commits");
+
+        /// <summary>
+        /// Get list of project tags.
+        /// </summary>
+        /// <param name="id">Id of the project.</param>
+        public async Task<IList<Tag>> GetTagsAsync(int id) =>
+            await _httpFacade.GetPagedList<Tag>($"projects/{id}/repository/tags");
+
+        /// <summary>
+        /// Get single project tag.
+        /// </summary>
+        /// <param name="id">Id of the project.</param>
+        /// <param name="name">Name of the tag.</param>
+        public async Task<IList<Tag>> GetTagsAsync(int id, string name) =>
+            await _httpFacade.GetPagedList<Tag>($"projects/{id}/repository/tags/{name}");
+
+        /// <summary>
+        /// Creates new project tag.
+        /// </summary>
+        /// <param name="request">Create tag request.</param>
+        /// <returns>Newly created tag.</returns>
+        public async Task<Tag> CreateTagAsync(CreateProjectTagRequest request)
+        {
+            Guard.NotNull(request, nameof(request));
+            return await _httpFacade.Post<Tag>($"projects/{request.ProjectId}/repository/tags", request);
+        }
+
+        /// <summary>
+        /// Deletes project tag.
+        /// </summary>
+        /// <param name="id">Id of the project.</param>
+        /// <param name="name">Name of the tag.</param>
+        public async Task DeleteTagAsync(int id, string name) =>
+            await _httpFacade.Delete($"projects/{id}/repository/tags/{name}");
+
     }
 }
